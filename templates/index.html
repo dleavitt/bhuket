@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Bhuket</title>
+  <link rel="stylesheet" href="/static/stylesheets/styles.css">
+</head>
+<body>
+  <div class="container">
+    <header class="splash">
+      <div class="row-fluid">
+        <div class="span12">
+          <h1>Bhuket <small>So many buckets!</small></h1>
+          <p>
+            A script to create S3 buckets with per-project access permissions without copying and pasting any more policy files.
+          </p>
+          <p>Yeah, bhuk that.</p>
+        </div>
+      </div>
+    </header>
+    <div class="row-fluid">
+      <div class="span12">
+        <form action="/buckets/create" method="post" accept-charset="utf-8" class="form-horizontal" id="create-bucket">
+          <input name=_csrf_token type=hidden value="{{ csrf_token() }}">
+
+          <h2>Create Bucket</h2>
+          <fieldset>
+            <legend>Your New Bucket</legend>
+            <div class="control-group">
+              <label class="control-label" for="bucket-name">Bucket Name</label>
+              <div class="controls">
+                <input type="text" id="bucket-name" name="bucket-name" placeholder="Bucket Name" class="input-xlarge">
+                <span class="help-block">
+                  All lowercase, no underscores, no periods.
+                  <a href="http://support.rightscale.com/06-FAQs/FAQ_0094_-_What_are_valid_S3_bucket_names%3F" target="_blank">More info here.</a>
+                </span>
+              </div>
+            </div>
+          </fieldset>
+
+          <fieldset>
+            <legend>Your AWS Credentials</legend>
+
+            <div class="control-group">
+              <label class="control-label" for="aws-key">AWS Access Key ID</label>
+              <div class="controls">
+                <input type="text" id="aws-key" name="aws-key" placeholder="AWS Access Key ID" class="input-xxlarge">
+              </div>
+            </div>
+
+            <div class="control-group">
+              <label class="control-label" for="aws-secret">AWS Secret</label>
+              <div class="controls">
+                <input type="text" id="aws-secret" name="aws-secret" placeholder="AWS Secret" class="input-xxlarge">
+              </div>
+            </div>
+          </fieldset>
+          <div class="form-actions">
+            <input type="submit" value="Create Bucket" class="btn btn-primary btn-large">
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+  <script src="/static/javascripts/jquery.js"></script>
+  <script src="/static/javascripts/jquery.form.js"></script>
+  <script src="/static/javascripts/application.js"></script>
+</body>
+</html>

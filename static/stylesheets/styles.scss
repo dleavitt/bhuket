@@ -1,0 +1,41 @@
+$iconSpritePath:          asset-url("glyphicons-halflings.png", asset);
+$iconWhiteSpritePath:     asset-url("glyphicons-halflings-white.png", asset);
+
+@import "bootstrap";
+
+#main {
+  @extend .container-fluid;
+  position: relative;
+  margin: 0 0 0 0;
+  padding-left: 0px;
+}
+
+body {
+  color: #3D3937;
+  .splash {
+    padding: 30px 8px;
+    font-size: 110%;
+    h1, h2, h3 {
+      line-height: 75%;
+
+      & small {
+        font-size: 40%;
+      }
+    }
+    h1 {
+      font-size: 400%;
+      color: $black;
+    }
+    h2 {
+      font-size: 240%;
+    }
+  }
+  footer {
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    margin: 20px;
+    z-index: 1;
+    font-size: 90%;
+  }
+}
