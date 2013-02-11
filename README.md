@@ -29,8 +29,7 @@ Hopefully pretty straightforward. It will throw your AWS credentials away at the
 - Done!
 
 ## TODO:
-
-- force SSL in production (production settings in general)
+  
 - tests
 - asset situation is a mess
 

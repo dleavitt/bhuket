@@ -35,7 +35,7 @@ def index():
     return render_template("index.html")
 
 
-@app.route('/buckets/create', methods=['POST', 'GET'])
+@app.route('/buckets/create', methods=['POST'])
 def create():
     bucketier = Bucketier(request.form.get('bucket-name'),
         request.form.get('aws-key'), request.form.get('aws-secret'))
@@ -51,7 +51,6 @@ def create():
                 'status': False,
                 'message': ex.message,
             })
-
     else:
         # this should really be a non-200 status code
         return jsonify({
