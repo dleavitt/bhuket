@@ -6731,3 +6731,13 @@ body footer {
   z-index: 1;
   font-size: 90%;
 }
+
+/* line 43, styles.scss */
+footer {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  margin: 20px;
+  z-index: 1;
+  font-size: 90%;
+}

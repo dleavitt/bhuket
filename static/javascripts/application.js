@@ -28,13 +28,12 @@
         $btn.button('reset');
         if (response.status) {
           b = response.bucket;
+          $("#new-bucket-url").text(b.bucket_url);
           $("#new-bucket-name").text(b.bucket_name);
           $("#new-aws-key").text(b.aws_key);
           $("#new-aws-secret").text(b.aws_secret);
-          $('#success-modal').modal({
-            show: true,
-            backdrop: false
-          });
+          $("#new-user-name").text(b.user_name);
+          $('#success-modal').modal();
         } else {
           $alertError.fadeIn().find('.alert-message').text(response.message);
         }

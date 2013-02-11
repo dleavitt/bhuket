@@ -36,8 +36,9 @@ class Bucketier:
 
     def to_json(self):
         return {
-            'job_id': self.job_id,
+            'user_name': self.user_name,
             'bucket_name': self.bucket_name,
+            'bucket_url': "https://s3.amazonaws.com/%s/" % self.bucket_name,
             'aws_key': self.user_aws_key,
             'aws_secret': self.user_aws_secret
         }
@@ -67,7 +68,7 @@ class Bucketier:
 
     def create_bucket(self):
         # TODO: check if name has been taken, etc
-        self.s3.create_bucket(self.bucket_name)
+        return self.s3.create_bucket(self.bucket_name)
 
     def validate(self):
         for attr in 'bucket_name aws_key aws_secret'.split():

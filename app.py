@@ -62,6 +62,11 @@ def create():
 # GO
 
 if __name__ == '__main__':
-    port = int(os.environ.get('PORT', 5000))
-    # app.run(host='0.0.0.0', port=port)
-    app.run(debug=True)
+    if os.environ.get('ENV', 'development') == 'development':
+        print "Starting in development mode"
+        app.run(debug=True)
+    else:
+        port = int(os.environ.get('PORT', 5000))
+        print "Starting in production mode on port %s" % port
+        app.run(host='0.0.0.0', port=port)
+
