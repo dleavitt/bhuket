@@ -7,8 +7,45 @@
   };
 
   $(function() {
-    return $("#create-bucket").ajaxForm(function(a, b, c) {
-      return log(a, b, c);
+    var $alertError;
+    $alertError = $("#alert-error");
+    $alertError.find(".close").click(function() {
+      return $alertError.fadeOut();
+    });
+    if (localStorage["aws-key"] && localStorage["aws-secret"]) {
+      $("#aws-key").val(localStorage["aws-key"]);
+      $("#aws-secret").val(localStorage["aws-secret"]);
+    }
+    return $("#create-bucket").submit(function(e) {
+      var $btn, $form;
+      e.preventDefault();
+      $form = $(this);
+      $btn = $form.find("input[type=submit]");
+      $alertError.hide();
+      $btn.button('loading');
+      return $form.ajaxSubmit(function(response) {
+        var b;
+        $btn.button('reset');
+        if (response.status) {
+          b = response.bucket;
+          $("#new-bucket-name").text(b.bucket_name);
+          $("#new-aws-key").text(b.aws_key);
+          $("#new-aws-secret").text(b.aws_secret);
+          $('#success-modal').modal({
+            show: true,
+            backdrop: false
+          });
+        } else {
+          $alertError.fadeIn().find('.alert-message').text(response.message);
+        }
+        if ($("#save-creds:checked").length && response.status) {
+          localStorage["aws-key"] = $("#aws-key").val();
+          return localStorage["aws-secret"] = $("#aws-secret").val();
+        } else if (!$("#save-creds:checked").length) {
+          localStorage.removeItem("aws-key");
+          return localStorage.removeItem("aws-secret");
+        }
+      });
     });
   });
 

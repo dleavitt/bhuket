@@ -1,21 +1,11 @@
 import os
 import uuid
-from redis import StrictRedis
 from flask import Flask, request, render_template, g, jsonify, abort, session
 
 from bucketier import Bucketier
 
 app = Flask(__name__)
 app.secret_key = os.environ.get('SECRET_KEY') or "Set a secret key plz"
-
-
-redis_uri = os.environ.get('REDISTOGO_URL')
-if redis_uri:
-    r = StrictRedis.from_url(redis_uri)
-else:
-    r = StrictRedis()
-
-Bucketier.redis = r
 
 
 # Helpers
@@ -53,12 +43,13 @@ def create():
     if bucketier.validate():
         try:
             bucketier.run()
-            return jsonify({'status': True, 'job': bucketier.to_json()})
-        except StandardError as ex:
+            return jsonify({'status': True, 'bucket': bucketier.to_json()})
+        except Bucketier.BucketierException as ex:
+            # this should really be a non-200 status code
+            print ex
             return jsonify({
                 'status': False,
-                'message': "There was an error. Bad AWS Creds?",
-                'error': ex.message
+                'message': ex.message,
             })
 
     else:

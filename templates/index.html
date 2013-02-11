@@ -18,12 +18,22 @@
         </div>
       </div>
     </header>
+
+    <hr>
+
     <div class="row-fluid">
       <div class="span12">
+
+        <div class="alert fade in hide alert-error" id="alert-error">
+          <button type="button" class="close">×</button>
+          <strong>Dang:</strong>
+          <span class="alert-message"></span>
+        </div>
+
         <form action="/buckets/create" method="post" accept-charset="utf-8" class="form-horizontal" id="create-bucket">
           <input name=_csrf_token type=hidden value="{{ csrf_token() }}">
-
           <h2>Create Bucket</h2>
+
           <fieldset>
             <legend>Your New Bucket</legend>
             <div class="control-group">
@@ -40,30 +50,62 @@
 
           <fieldset>
             <legend>Your AWS Credentials</legend>
-
             <div class="control-group">
               <label class="control-label" for="aws-key">AWS Access Key ID</label>
               <div class="controls">
                 <input type="text" id="aws-key" name="aws-key" placeholder="AWS Access Key ID" class="input-xxlarge">
               </div>
             </div>
-
             <div class="control-group">
               <label class="control-label" for="aws-secret">AWS Secret</label>
               <div class="controls">
-                <input type="text" id="aws-secret" name="aws-secret" placeholder="AWS Secret" class="input-xxlarge">
+                <input type="password" id="aws-secret" name="aws-secret" placeholder="AWS Secret" class="input-xxlarge">
+              </div>
+            </div>
+            <div class="control-group">
+              <div class="controls">
+                <label class="checkbox">
+                  <input type="checkbox" id="save-creds">
+                  Save these credentials in your browser
+                  (warning: this is a terrible idea)
+                </label>
               </div>
             </div>
           </fieldset>
+
           <div class="form-actions">
-            <input type="submit" value="Create Bucket" class="btn btn-primary btn-large">
+            <input type="submit" value="Create Bucket" class="btn btn-primary btn-large" data-loading-text="Fetching a Bucket...">
           </div>
         </form>
       </div>
     </div>
   </div>
+
+  <div id="success-modal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-header">
+      <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+      <h3 id="myModalLabel">Bucket Created!</h3>
+    </div>
+    <div class="modal-body">
+      <dl>
+        <dt>Bucket:</dt>
+        <dd id="new-bucket-name"></dd>
+        <dt>AWS Access Key ID:</dt>
+        <dd id="new-aws-key"></dd>
+        <dt>AWS Secret:</dt>
+        <dd id="new-aws-secret"></dd>
+      </dl>
+    </div>
+    <div class="modal-footer">
+      <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+    </div>
+  </div>
+
   <script src="/static/javascripts/jquery.js"></script>
   <script src="/static/javascripts/jquery.form.js"></script>
+  <script src="/static/javascripts/bootstrap-button.js"></script>
+  <script src="/static/javascripts/bootstrap-modal.js"></script>
+
   <script src="/static/javascripts/application.js"></script>
 </body>
 </html>

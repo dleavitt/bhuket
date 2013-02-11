@@ -22,9 +22,6 @@ Would be nice to have an asset pipeline built into the app, I bet that can be do
 
 ## TODO:
 
-- return creds for the newly created user (make new creds if not new user)
-- add JS client code
-- JS should poll, operation should run in BG with redis queue
 - force SSL in production (production settings in general)
 - hook up Heroku
 - tests

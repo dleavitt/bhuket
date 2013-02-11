@@ -3,7 +3,4 @@ Flask==0.9
 gunicorn==0.14.6
 newrelic==1.5.0.103
 
-hiredis==0.1.1
-
-redis==2.7.1
 boto==2.8.0

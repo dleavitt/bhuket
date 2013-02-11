@@ -8,10 +8,10 @@ from boto.exception import BotoServerError
 class Bucketier:
     "Our brave worker. Wrangler of the bucket."
 
-    def __init__(self, bucket_name, aws_key, aws_secret):
-        # smell?
-        self.redis = self.__class__.redis
+    class BucketierException(StandardError):
+        pass
 
+    def __init__(self, bucket_name, aws_key, aws_secret):
         self.job_id = str(uuid.uuid1())
         self.bucket_name = bucket_name
         self.aws_key = aws_key
@@ -22,32 +22,48 @@ class Bucketier:
 
         self.iam = IAMConnection(aws_key, aws_secret)
         self.s3 = S3Connection(aws_key, aws_secret)
-        self.status = ':|'
 
     def run(self):
-        self.create_user()
-        self.create_bucket()
-        self.status = ':)'
+        try:
+            self.create_user()
+            self.create_bucket()
+        except BotoServerError as ex:
+            if ex.code == 'InvalidClientTokenId':
+                raise self.BucketierException("Bad AWS creds - did you enter them right?")
+            else:
+                print ex
+                raise self.BucketierException(ex.error_message)
 
     def to_json(self):
         return {
             'job_id': self.job_id,
             'bucket_name': self.bucket_name,
-            'status': self.status
+            'aws_key': self.user_aws_key,
+            'aws_secret': self.user_aws_secret
         }
 
     def create_user(self):
-        # TODO: check creds
-        # TODO: checking responses would be a good thing
         try:
             self.iam.create_user(self.user_name)
         except BotoServerError as ex:
-            # is it because the user already exists? that's fine, carry on
-            if ex.status != 409:
+            if ex.code == 'EntityAlreadyExists':
+                # is it because the user already exists?
+                # just run it again with a random name
+                self.user_name = self.user_name + "-" + uuid.uuid1().hex[0:12]
+                return self.create_user()
+            else:
                 # TODO: mark it as failed and move on
                 raise ex
 
+        key_response = self.iam.create_access_key(self.user_name)
+        # TODO: catch this if it blows up
+        key = key_response['create_access_key_response']['create_access_key_result']['access_key']
+        self.user_aws_key = key['access_key_id']
+        self.user_aws_secret = key['secret_access_key']
+
         self.iam.put_user_policy(self.user_name, "bucket-access", self.policy_template())
+
+        return (self.user_name, self.user_aws_key, self.user_aws_secret)
 
     def create_bucket(self):
         # TODO: check if name has been taken, etc
