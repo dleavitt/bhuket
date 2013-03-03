@@ -2,6 +2,7 @@ import os
 import uuid
 from flask import Flask, request, render_template, jsonify, abort, session
 from flask.ext.assets import Environment, Bundle
+from flask_sslify import SSLify
 
 from bucketier import Bucketier
 
@@ -9,6 +10,7 @@ app = Flask(__name__)
 app.debug = os.environ.get('ENV', 'development') == 'development'
 app.secret_key = os.environ.get('SECRET_KEY') or "Set a secret key plz"
 
+SSLify(app)
 
 # Assets
 
