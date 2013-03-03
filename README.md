@@ -14,9 +14,7 @@ Install python and pip and virtualenv and ruby and node and npm and all that goo
 
 ### Run
 
-`make run` - runs the app plus compass and coffeescript change watcher dudes.
-
-Would be nice to have an asset pipeline built into the app, I bet that can be done.
+`make run` - starts the app
 
 ## Usage
 
@@ -29,9 +27,8 @@ Hopefully pretty straightforward. It will throw your AWS credentials away at the
 - Done!
 
 ## TODO:
-  
+
 - tests
-- asset situation is a mess
 
 ## Browser Windows I Had Open:
 
@@ -39,3 +36,4 @@ Hopefully pretty straightforward. It will throw your AWS credentials away at the
 - https://devcenter.heroku.com/articles/python
 - http://www.artfulcode.net/articles/multi-threading-python/
 - https://github.com/holdenmatt/flask-boilerplate
+- http://elsdoerfer.name/docs/flask-assets/

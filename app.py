@@ -1,11 +1,31 @@
 import os
 import uuid
-from flask import Flask, request, render_template, g, jsonify, abort, session
+from flask import Flask, request, render_template, jsonify, abort, session
+from flask.ext.assets import Environment, Bundle
 
 from bucketier import Bucketier
 
 app = Flask(__name__)
+app.debug = os.environ.get('ENV', 'development') == 'development'
 app.secret_key = os.environ.get('SECRET_KEY') or "Set a secret key plz"
+
+
+# Assets
+
+assets = Environment(app)
+assets.url = "/static/"
+assets.manifest = "file"
+assets.debug = app.debug
+assets.config['compass_plugins'] = ['bootstrap-sass']
+
+assets.register('js', 'http://cdnjs.cloudflare.com/ajax/libs/jquery/1.9.1/jquery.min.js',
+                'http://cdnjs.cloudflare.com/ajax/libs/jquery.form/3.24/jquery.form.js',
+                'http://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/2.3.0/js/bootstrap.min.js',
+                Bundle('js/app.coffee', filters='coffeescript', output='gen/app.js'),
+                filters='closure_js', output='gen/app-%(version)s.js')
+
+assets.register('css', 'css/app.scss', filters='compass,cssmin',
+                output='gen/app-%(version)s.css')
 
 
 # Helpers
@@ -38,7 +58,8 @@ def index():
 @app.route('/buckets/create', methods=['POST'])
 def create():
     bucketier = Bucketier(request.form.get('bucket-name'),
-        request.form.get('aws-key'), request.form.get('aws-secret'))
+                          request.form.get('aws-key'),
+                          request.form.get('aws-secret'))
 
     if bucketier.validate():
         try:
@@ -61,11 +82,10 @@ def create():
 # GO
 
 if __name__ == '__main__':
-    if os.environ.get('ENV', 'development') == 'development':
+    if app.debug:
         print "Starting in development mode"
         app.run(debug=True)
     else:
         port = int(os.environ.get('PORT', 5000))
         print "Starting in production mode on port %s" % port
         app.run(host='0.0.0.0', port=port)
-

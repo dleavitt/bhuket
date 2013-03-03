@@ -3,7 +3,9 @@
 <head>
   <meta charset="utf-8">
   <title>Bhuket</title>
-  <link rel="stylesheet" href="/static/stylesheets/styles.css">
+  {% assets "css" %}
+    <link rel="stylesheet" href="{{ ASSET_URL }}">
+  {% endassets %}
 </head>
 <body>
   <div class="container">
@@ -14,7 +16,6 @@
           <p>
             A script to create S3 buckets with per-project access permissions without copying and pasting any more policy files.
           </p>
-          <p>Because yeah, bhuk that.</p>
         </div>
       </div>
     </header>
@@ -67,7 +68,7 @@
                 <label class="checkbox">
                   <input type="checkbox" id="save-creds">
                   Save these credentials in your browser
-                  (warning: this is a terrible idea)
+                  (warning: this is a terrible idea, use 1Password or something)
                 </label>
               </div>
             </div>
@@ -90,7 +91,7 @@
   <div id="success-modal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-header">
       <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-      <h3 id="myModalLabel">Here is your bucket. Mint, monsieur?</h3>
+      <h3 id="myModalLabel">Here is your bucket.</h3>
     </div>
     <div class="modal-body">
       <dl>
@@ -111,10 +112,8 @@
       <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
     </div>
   </div>
-
-  <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-  <script src="//cdnjs.cloudflare.com/ajax/libs/jquery.form/3.24/jquery.form.js"></script>
-  <script src="http://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/2.3.0/js/bootstrap.min.js"></script>
-  <script src="/static/javascripts/application.js"></script>
+  {% assets "js" %}
+    <script type="text/javascript" src="{{ ASSET_URL }}"></script>
+  {% endassets %}
 </body>
 </html>

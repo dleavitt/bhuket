@@ -13,3 +13,6 @@ venv/
 .sass-cache/
 node_modules/
 test.py
+/static/.webassets-manifest
+/static/.webassets-cache/
+/static/gen/*

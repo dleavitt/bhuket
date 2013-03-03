@@ -1,9 +1,12 @@
 Flask==0.9
-Flask-SSLify==0.1.4
+Flask-Assets==0.8
 Jinja2==2.6
 Werkzeug==0.8.3
 boto==2.8.0
+closure==20121212
+cssmin==0.1.4
 distribute==0.6.28
 gunicorn==0.17.2
-newrelic==1.10.0.28
+newrelic==1.10.2.38
+webassets==0.8
 wsgiref==0.1.2
