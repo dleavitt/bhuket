@@ -1,0 +1,33 @@
+#!/usr/bin/env bash
+set -eo pipefail
+
+# Largely ganked from:
+# https://github.com/heroku/heroku-buildpack-python/blob/master/bin/steps/collectstatic
+# https://github.com/nigma/heroku-django-cookbook
+
+if [ -f bin/install_nodejs ]; then
+    echo "-----> Running install_nodejs"
+    chmod +x bin/install_nodejs
+    bin/install_nodejs
+
+    if [ -f bin/install_coffee_script ]; then
+        echo "-----> Running install_coffee_script"
+        chmod +x bin/install_coffee_script
+        bin/install_coffee_script
+    fi
+fi
+
+
+if [ -f bin/install_compass ]; then
+  echo "-----> Running install_compass"
+  chmod +x bin/install_compass
+  bin/install_compass
+fi
+
+if [ -f bin/build_assets ]; then
+  echo "-----> Compiling webassets"
+  chmod +x bin/build_assets
+  bin/build_assets
+fi
+
+echo

@@ -1,0 +1,16 @@
+#!/usr/bin/env bash
+set -eo pipefail
+
+# Pretty output
+indent() {
+  RE="s/^/       /"
+  [ $(uname) == "Darwin" ] && sed -l "$RE" || sed -u "$RE"
+}
+
+GEM_PATH=/app/.gem/ruby/1.9.1
+BIN_PATH=/app/.heroku/python/bin
+
+for GEM_NAME in compass bootstrap-sass
+do
+  gem install $GEM_NAME --install-dir $GEM_PATH --no-rdoc --no-ri -n $BIN_PATH 2>&1 | indent
+done
