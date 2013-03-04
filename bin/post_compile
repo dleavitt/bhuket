@@ -24,10 +24,10 @@ if [ -f bin/install_compass ]; then
   bin/install_compass
 fi
 
-if [ -f bin/build_assets ]; then
+if [ -f bin/run_build_assets ]; then
   echo "-----> Compiling webassets"
-  chmod +x bin/build_assets
-  bin/build_assets
+  chmod +x bin/run_build_assets
+  bin/run_build_assets
 fi
 
 echo

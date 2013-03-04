@@ -9,6 +9,7 @@ from bucketier import Bucketier
 app = Flask(__name__)
 app.debug = os.environ.get('ENV', 'development') == 'development'
 app.secret_key = os.environ.get('SECRET_KEY') or "Set a secret key plz"
+app.config['SEND_FILE_MAX_AGE_DEFAULT'] = 315576000
 
 SSLify(app)
 
@@ -18,6 +19,7 @@ assets = Environment(app)
 assets.url = "/static/"
 assets.manifest = "file"
 assets.debug = app.debug
+assets.auto_buid = app.debug
 assets.config['compass_plugins'] = ['bootstrap-sass']
 
 assets.register('js', 'http://cdnjs.cloudflare.com/ajax/libs/jquery/1.9.1/jquery.min.js',
