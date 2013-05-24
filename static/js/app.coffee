@@ -27,6 +27,11 @@ $ ->
         $("#new-aws-key").text(b.aws_key)
         $("#new-aws-secret").text(b.aws_secret)
         $("#new-user-name").text(b.user_name)
+        if b.cloudfront_domain
+          $(".new-cloudfront-domain").show()
+          $("#new-cloudfront-domain").text(b.cloudfront_domain)
+        else
+          $(".new-cloudfront-domain").hide()
 
         $('#success-modal').modal()
       else

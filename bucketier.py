@@ -1,7 +1,7 @@
 import uuid
 from string import Template
-from boto.iam.connection import IAMConnection
-from boto.s3.connection import S3Connection
+import boto
+from boto.cloudfront.origin import S3Origin
 from boto.exception import BotoServerError
 
 
@@ -20,8 +20,9 @@ class Bucketier:
         # TODO: clean up bucket name string? What's a valid AWS username?
         self.user_name = "bhuket-" + bucket_name
 
-        self.iam = IAMConnection(aws_key, aws_secret)
-        self.s3 = S3Connection(aws_key, aws_secret)
+        self.iam = boto.connect_iam(aws_key, aws_secret)
+        self.s3 = boto.connect_s3(aws_key, aws_secret)
+        self.cloudfront = boto.connect_cloudfront(aws_key, aws_secret)
 
     def run(self):
         try:
@@ -35,13 +36,19 @@ class Bucketier:
                 raise self.BucketierException(ex.error_message)
 
     def to_json(self):
-        return {
+        hsh = {
             'user_name': self.user_name,
             'bucket_name': self.bucket_name,
             'bucket_url': "https://s3.amazonaws.com/%s/" % self.bucket_name,
             'aws_key': self.user_aws_key,
-            'aws_secret': self.user_aws_secret
+            'aws_secret': self.user_aws_secret,
         }
+
+        # is this the right way to check?
+        if hasattr(self, 'cloudfront_domain'):
+            hsh['cloudfront_domain'] = self.cloudfront_domain
+
+        return hsh
 
     def create_user(self):
         try:
@@ -69,6 +76,13 @@ class Bucketier:
     def create_bucket(self):
         # TODO: check if name has been taken, etc
         return self.s3.create_bucket(self.bucket_name)
+
+    def create_cloudfront_distribution(self):
+        # TODO: catch error if user doesn't have rights or something
+        origin = S3Origin(self.bucket_name + ".s3.amazonaws.com")
+        dist = self.cloudfront.create_distribution(origin=origin, enabled=True)
+        self.cloudfront_domain = dist.domain_name
+        return dist.domain_name
 
     def validate(self):
         for attr in 'bucket_name aws_key aws_secret'.split():

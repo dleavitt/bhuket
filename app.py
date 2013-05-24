@@ -68,6 +68,8 @@ def create():
     if bucketier.validate():
         try:
             bucketier.run()
+            if request.form.get('add-cloudfront'):
+                bucketier.create_cloudfront_distribution()
             return jsonify({'status': True, 'bucket': bucketier.to_json()})
         except Bucketier.BucketierException as ex:
             # this should really be a non-200 status code
