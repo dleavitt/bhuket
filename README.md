@@ -10,11 +10,33 @@ Uses flask and boto, which both seem cool.
 
 ### Init
 
-Install python and pip and virtualenv and ruby and node and npm and all that good stuff. Then run `make init`.
+First, make sure Python, Ruby and Node are installed. This tiny app uses all of them.
+
+Then create your virtual environment:
+
+    easy_install pip # or brew install python
+    pip install virtualenvwrapper
+    mkvirtualenv --distribute bhuket
+
+Okay, now install all your dependencies:
+
+    pip install -r requirements.txt
+    gem install foreman compass bootstrap-sass
+    npm install -g coffee-script
 
 ### Run
 
-`make run` - starts the app
+First activate your virtual environment:
+
+    workon bhuket
+
+To start the dev server:
+
+    python app.py
+
+To run tasks:
+
+    python manage.py
 
 ## Usage
 
